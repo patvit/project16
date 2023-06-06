@@ -1,9 +1,8 @@
 
 # Задание 1
-# Написать итератор, который принимает список списков,
-# и возвращает их плоское представление, т.е последовательность состоящую из вложенных элементов.
-# Например
-#задание 3. Написать итератор аналогичный итератору из задания 1, но обрабатывающий списки с любым уровнем вложенности
+#Доработать класс FlatIterator в коде ниже. Должен получиться итератор, который принимает список списков и возвращает их плоское представление, т. е. последовательность, состоящую из вложенных элементов. Функция test в коде ниже также должна отработать без ошибок.
+#задание 3. Необязательное задание. Написать итератор, аналогичный итератору из задания 1, но обрабатывающий списки с любым уровнем вложенности. Шаблон и тест в коде ниже:
+
 
 
 
@@ -38,18 +37,57 @@ class FlatIterator:
             else:
                 self.flat_list.append(item)
 
+def test_1():
 
-for item in FlatIterator(nested_list):
-	print(item) #
+    list_of_lists_1 = [
+        ['a', 'b', 'c'],
+        ['d', 'e', 'f', 'h', False],
+        [1, 2, None]
+    ]
 
-flat_list = [item for item in FlatIterator(nested_list)]
-print(flat_list)
+    for flat_iterator_item, check_item in zip(
+            FlatIterator(list_of_lists_1),
+            ['a', 'b', 'c', 'd', 'e', 'f', 'h', False, 1, 2, None]
+    ):
+
+        assert flat_iterator_item == check_item
+
+    assert list(FlatIterator(list_of_lists_1)) == ['a', 'b', 'c', 'd', 'e', 'f', 'h', False, 1, 2, None]
+
+
+if __name__ == '__main__':
+    test_1()
+
+def test_3():
+
+    list_of_lists_2 = [
+        [['a'], ['b', 'c']],
+        ['d', 'e', [['f'], 'h'], False],
+        [1, 2, None, [[[[['!']]]]], []]
+    ]
+
+    for flat_iterator_item, check_item in zip(
+            FlatIterator(list_of_lists_2),
+            ['a', 'b', 'c', 'd', 'e', 'f', 'h', False, 1, 2, None, '!']
+    ):
+
+        assert flat_iterator_item == check_item
+
+    assert list(FlatIterator(list_of_lists_2)) == ['a', 'b', 'c', 'd', 'e', 'f', 'h', False, 1, 2, None, '!']
+
+
+if __name__ == '__main__':
+    test_3()
+
+
 
 #---------------------------------------------
 
 #Задание 2
-# Написать генератор, который принимает список списков, и возвращает их плоское представление. Например
-#4.* Написать генератор аналогичный генератор из задания 2, но обрабатывающий списки с любым уровнем вложенности
+# Доработать функцию flat_generator. Должен получиться генератор, который принимает список списков и возвращает их плоское представление. Функция test в коде ниже также должна отработать без ошибок.
+#4.* 4.* Необязательное задание. Написать генератор, аналогичный генератору из задания 2, но обрабатывающий списки с любым уровнем вложенности. Шаблон и тест в коде ниже:
+
+import types
 
 nested_list = [
 	['a', 'b', 'c'],
@@ -64,6 +102,49 @@ def flat_generator(nested_list):
         else:
             yield item
 
-for item in flat_generator(nested_list):
-    print(item)
+def test_2():
+
+    list_of_lists_1 = [
+        ['a', 'b', 'c'],
+        ['d', 'e', 'f', 'h', False],
+        [1, 2, None]
+    ]
+
+    for flat_iterator_item, check_item in zip(
+            flat_generator(list_of_lists_1),
+            ['a', 'b', 'c', 'd', 'e', 'f', 'h', False, 1, 2, None]
+    ):
+
+        assert flat_iterator_item == check_item
+
+    assert list(flat_generator(list_of_lists_1)) == ['a', 'b', 'c', 'd', 'e', 'f', 'h', False, 1, 2, None]
+
+    assert isinstance(flat_generator(list_of_lists_1), types.GeneratorType)
+
+def test_4():
+
+    list_of_lists_2 = [
+        [['a'], ['b', 'c']],
+        ['d', 'e', [['f'], 'h'], False],
+        [1, 2, None, [[[[['!']]]]], []]
+    ]
+
+    for flat_iterator_item, check_item in zip(
+            flat_generator(list_of_lists_2),
+            ['a', 'b', 'c', 'd', 'e', 'f', 'h', False, 1, 2, None, '!']
+    ):
+
+        assert flat_iterator_item == check_item
+
+    assert list(flat_generator(list_of_lists_2)) == ['a', 'b', 'c', 'd', 'e', 'f', 'h', False, 1, 2, None, '!']
+
+    assert isinstance(flat_generator(list_of_lists_2), types.GeneratorType)
+
+
+
+if __name__ == '__main__':
+    test_2()
+if __name__ == '__main__':
+    test_4()
+
 
